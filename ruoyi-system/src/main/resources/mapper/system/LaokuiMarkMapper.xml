@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.LaokuiMarkMapper">
+    
+    <resultMap type="LaokuiMark" id="LaokuiMarkResult">
+        <result property="id"    column="id"    />
+        <result property="commentatorPhone"    column="commentator_phone"    />
+        <result property="score"    column="score"    />
+        <result property="commentarorByPhone"    column="commentaror_by_phone"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectLaokuiMarkVo">
+        select id, commentator_phone, score, commentaror_by_phone, create_time from laokui_mark
+    </sql>
+
+    <select id="selectLaokuiMarkList" parameterType="LaokuiMark" resultMap="LaokuiMarkResult">
+        <include refid="selectLaokuiMarkVo"/>
+        <where>  
+            <if test="commentatorPhone != null  and commentatorPhone != ''"> and commentator_phone = #{commentatorPhone}</if>
+            <if test="score != null "> and score = #{score}</if>
+            <if test="commentarorByPhone != null  and commentarorByPhone != ''"> and commentaror_by_phone = #{commentarorByPhone}</if>
+        </where>
+    </select>
+    
+    <select id="selectLaokuiMarkById" parameterType="Long" resultMap="LaokuiMarkResult">
+        <include refid="selectLaokuiMarkVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertLaokuiMark" parameterType="LaokuiMark" useGeneratedKeys="true" keyProperty="id">
+        insert into laokui_mark
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="commentatorPhone != null and commentatorPhone != ''">commentator_phone,</if>
+            <if test="score != null">score,</if>
+            <if test="commentarorByPhone != null and commentarorByPhone != ''">commentaror_by_phone,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="commentatorPhone != null and commentatorPhone != ''">#{commentatorPhone},</if>
+            <if test="score != null">#{score},</if>
+            <if test="commentarorByPhone != null and commentarorByPhone != ''">#{commentarorByPhone},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLaokuiMark" parameterType="LaokuiMark">
+        update laokui_mark
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="commentatorPhone != null and commentatorPhone != ''">commentator_phone = #{commentatorPhone},</if>
+            <if test="score != null">score = #{score},</if>
+            <if test="commentarorByPhone != null and commentarorByPhone != ''">commentaror_by_phone = #{commentarorByPhone},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteLaokuiMarkById" parameterType="Long">
+        delete from laokui_mark where id = #{id}
+    </delete>
+
+    <delete id="deleteLaokuiMarkByIds" parameterType="String">
+        delete from laokui_mark where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
