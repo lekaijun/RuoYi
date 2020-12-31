@@ -34,7 +34,6 @@ public class LaokuiMarkController extends BaseController
     @Autowired
     private ILaokuiMarkService laokuiMarkService;
 
-    @RequiresPermissions("laokui:mark:view")
     @GetMapping()
     public String mark()
     {
@@ -85,6 +84,27 @@ public class LaokuiMarkController extends BaseController
     @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(LaokuiMark laokuiMark)
+    {
+        return toAjax(laokuiMarkService.insertLaokuiMark(laokuiMark));
+    }
+
+
+    /**
+     * 新增评分
+     */
+    @GetMapping("/action")
+    public String action()
+    {
+        return prefix + "/action";
+    }
+
+    /**
+     * 新增保存评分
+     */
+    @Log(title = "评分", businessType = BusinessType.INSERT)
+    @PostMapping("/actionadd")
+    @ResponseBody
+    public AjaxResult actionadd(LaokuiMark laokuiMark)
     {
         return toAjax(laokuiMarkService.insertLaokuiMark(laokuiMark));
     }
